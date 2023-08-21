@@ -25,36 +25,43 @@
 
 namespace zx0;
 
-public class Block {
+public class Block
+{
     private readonly int bits;
     private readonly int index;
     private readonly int offset;
     private Block chain;
 
-    public Block(int bits, int index, int offset, Block chain) {
+    public Block(int bits, int index, int offset, Block chain)
+    {
         this.bits = bits;
         this.index = index;
         this.offset = offset;
         this.chain = chain;
     }
 
-    public int getBits() {
+    public int getBits()
+    {
         return bits;
     }
 
-    public int getIndex() {
+    public int getIndex()
+    {
         return index;
     }
 
-    public int getOffset() {
+    public int getOffset()
+    {
         return offset;
     }
 
-    public Block getChain() {
+    public Block getChain()
+    {
         return chain;
     }
 
-    public void setChain(Block chain) {
+    public void setChain(Block chain)
+    {
         this.chain = chain;
     }
 }

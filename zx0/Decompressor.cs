@@ -29,7 +29,7 @@ public class Decompressor
 {
     private int lastOffset;
     private byte[] inputData;
-    private List<Byte> output;
+    private List<byte> output;
     private int inputIndex;
     private int bitMask;
     private int bitValue;
@@ -98,7 +98,7 @@ public class Decompressor
     {
         lastOffset = Optimizer.INITIAL_OFFSET;
         inputData = input;
-        output = new List<Byte>();
+        output = new List<byte>();
         inputIndex = 0;
         bitMask = 0;
         backwards = backwardsMode;

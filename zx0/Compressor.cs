@@ -25,7 +25,8 @@
 
 namespace zx0;
 
-public class Compressor {
+public class Compressor
+{
     private byte[] output;
     private int outputIndex;
     private int inputIndex;
@@ -34,59 +35,73 @@ public class Compressor {
     private int diff;
     private bool backtrack;
 
-    private void readBytes(int n, int[] delta) {
+    private void readBytes(int n, int[] delta)
+    {
         inputIndex += n;
         diff += n;
         if (delta[0] < diff)
             delta[0] = diff;
     }
 
-    private void writeByte(int value) {
+    private void writeByte(int value)
+    {
         output[outputIndex++] = (byte)(value & 0xff);
         diff--;
     }
 
-    private void writeBit(int value) {
-        if (backtrack) {
-            if (value > 0) {
-                output[outputIndex-1] |= 1;
+    private void writeBit(int value)
+    {
+        if (backtrack)
+        {
+            if (value > 0)
+            {
+                output[outputIndex - 1] |= 1;
             }
             backtrack = false;
-        } else {
-            if (bitMask == 0) {
+        }
+        else
+        {
+            if (bitMask == 0)
+            {
                 bitMask = 128;
                 bitIndex = outputIndex;
                 writeByte(0);
             }
-            if (value > 0) {
+            if (value > 0)
+            {
                 output[bitIndex] |= (byte)bitMask;
             }
             bitMask >>= 1;
         }
     }
 
-    private void writeInterlacedEliasGamma(int value, bool backwardsMode, bool invertMode) {
+    private void writeInterlacedEliasGamma(int value, bool backwardsMode, bool invertMode)
+    {
         int i = 2;
-        while (i <= value) {
+        while (i <= value)
+        {
             i <<= 1;
         }
         i >>= 1;
-        while ((i >>= 1) > 0) {
+        while ((i >>= 1) > 0)
+        {
             writeBit(backwardsMode ? 1 : 0);
             writeBit(invertMode == ((value & i) == 0) ? 1 : 0);
         }
         writeBit(!backwardsMode ? 1 : 0);
     }
 
-    public byte[] compress(Block optimal, byte[] input, int skip, bool backwardsMode, bool invertMode, int[] delta) {
+    public byte[] compress(Block optimal, byte[] input, int skip, bool backwardsMode, bool invertMode, int[] delta)
+    {
         int lastOffset = Optimizer.INITIAL_OFFSET;
 
         // calculate and allocate output buffer
-        output = new byte[(optimal.getBits()+25)/8];
+        output = new byte[(optimal.getBits() + 25) / 8];
 
         // un-reverse optimal sequence
         Block prev = null;
-        while (optimal != null) {
+        while (optimal != null)
+        {
             Block next = optimal.getChain();
             optimal.setChain(prev);
             prev = optimal;
@@ -94,7 +109,7 @@ public class Compressor {
         }
 
         // initialize data
-        diff = output.Length-input.Length+skip;
+        diff = output.Length - input.Length + skip;
         delta[0] = 0;
         inputIndex = skip;
         outputIndex = 0;
@@ -102,9 +117,11 @@ public class Compressor {
         backtrack = true;
 
         // generate output
-        for (optimal = prev.getChain(); optimal != null; prev = optimal, optimal = optimal.getChain()) {
-            int length = optimal.getIndex()-prev.getIndex();
-            if (optimal.getOffset() == 0) {
+        for (optimal = prev.getChain(); optimal != null; prev = optimal, optimal = optimal.getChain())
+        {
+            int length = optimal.getIndex() - prev.getIndex();
+            if (optimal.getOffset() == 0)
+            {
                 // copy literals indicator
                 writeBit(0);
 
@@ -112,30 +129,35 @@ public class Compressor {
                 writeInterlacedEliasGamma(length, backwardsMode, false);
 
                 // copy literals values
-                for (int i = 0; i < length; i++) {
+                for (int i = 0; i < length; i++)
+                {
                     writeByte(input[inputIndex]);
                     readBytes(1, delta);
                 }
-            } else if (optimal.getOffset() == lastOffset) {
+            }
+            else if (optimal.getOffset() == lastOffset)
+            {
                 // copy from last offset indicator
                 writeBit(0);
 
                 // copy from last offset length
                 writeInterlacedEliasGamma(length, backwardsMode, false);
                 readBytes(length, delta);
-            } else {
+            }
+            else
+            {
                 // copy from new offset indicator
                 writeBit(1);
 
                 // copy from new offset MSB
-                writeInterlacedEliasGamma((optimal.getOffset()-1)/128+1, backwardsMode, invertMode);
+                writeInterlacedEliasGamma((optimal.getOffset() - 1) / 128 + 1, backwardsMode, invertMode);
 
                 // copy from new offset LSB
-                writeByte(backwardsMode ? ((optimal.getOffset()-1)%128)<<1 : (127-(optimal.getOffset()-1)%128)<<1);
+                writeByte(backwardsMode ? ((optimal.getOffset() - 1) % 128) << 1 : (127 - (optimal.getOffset() - 1) % 128) << 1);
 
                 // copy from new offset length
                 backtrack = true;
-                writeInterlacedEliasGamma(length-1, backwardsMode, false);
+                writeInterlacedEliasGamma(length - 1, backwardsMode, false);
                 readBytes(length, delta);
 
                 lastOffset = optimal.getOffset();
