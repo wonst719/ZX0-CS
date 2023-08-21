@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "zx0", "zx0\zx0.csproj", "{CFC01CBE-285F-425B-A4E4-FDB6B5F38F10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zx0cli", "zx0cli\zx0cli.csproj", "{C6E06EE5-ED3C-44C5-AE65-9AF975E4AD82}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFC01CBE-285F-425B-A4E4-FDB6B5F38F10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC01CBE-285F-425B-A4E4-FDB6B5F38F10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC01CBE-285F-425B-A4E4-FDB6B5F38F10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC01CBE-285F-425B-A4E4-FDB6B5F38F10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6E06EE5-ED3C-44C5-AE65-9AF975E4AD82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6E06EE5-ED3C-44C5-AE65-9AF975E4AD82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6E06EE5-ED3C-44C5-AE65-9AF975E4AD82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6E06EE5-ED3C-44C5-AE65-9AF975E4AD82}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA2F4DF7-9487-4A51-9671-97B872D473EA}
+	EndGlobalSection
+EndGlobal
